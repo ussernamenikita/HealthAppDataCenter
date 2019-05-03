@@ -1,3 +1,5 @@
+### Docker container with Riak TS database (https://hub.docker.com/r/basho/riak-ts/)
+
 All tables defined in /tables drectory will be loded to database when startup.
 1. Add execute permission to file prepare.sh
 
