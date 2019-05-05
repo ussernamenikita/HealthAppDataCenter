@@ -3,7 +3,6 @@
 All tables defined in /tables drectory will be loded to database when startup.
 1. Add execute permission to file run.sh
 
-   chmod +x prepare.sh
 2. Run run.sh with sudo 
 
 When the cluster has started, open Riak Explorer in the browser by navigating to localhost:8098/admin/.
