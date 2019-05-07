@@ -12,4 +12,4 @@ else
   chown 102:105 schemas/
   cp tables/* schemas/
 fi
-docker-compose up coordinator
+docker-compose up

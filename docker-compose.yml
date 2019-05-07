@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   coordinator:
     image: basho/riak-ts
@@ -13,6 +13,9 @@ services:
       - ./data:/var/lib/riak
       - ./logs:/var/log/riak
       - ./schemas:/etc/riak/schemas/
+    networks:
+      net:
+        ipv4_address: 10.3.0.2
   member:
     image: basho/riak-ts
     ports:
@@ -20,10 +23,32 @@ services:
       - "8098"
     labels:
       - "com.basho.riak.cluster.name=riakts"
-    links:
-      - coordinator
     depends_on:
       - coordinator
     environment:
       - CLUSTER_NAME=riakts
-      - COORDINATOR_NODE=coordinator
+      - COORDINATOR_NODE='10.3.0.2'
+    networks:
+      net:
+        ipv4_address: 10.3.0.3
+  nodeapp:
+    image: nbinik/healthapp
+    restart: always 
+    ports:
+      - "8080:8080"
+    depends_on:
+      - coordinator
+    environment:
+      - RIAK_ADDRESS='10.3.0.2:8087'
+      - RIAK_RECONECT_ATTEMPTS=5
+    volumes:
+      - /home/nikita/secrets:/home/node/app/secrets
+    networks:
+      net:
+        ipv4_address: 10.3.0.4
+networks:
+  net:
+    ipam:
+     config:
+       - subnet: 10.3.0.0/16
+
