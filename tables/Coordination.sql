@@ -8,6 +8,7 @@ CREATE TABLE Coordination
    latitude DOUBLE ,
    longitude DOUBLE ,
    altiture DOUBLE ,
+   speed DOUBLE,
    PRIMARY KEY (
      (user_id, QUANTUM(time, 15, 'm')),
       user_id, time)
