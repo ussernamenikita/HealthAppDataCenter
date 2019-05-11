@@ -42,7 +42,7 @@ services:
       - RIAK_ADDRESS='10.3.0.2:8087'
       - RIAK_RECONECT_ATTEMPTS=5
     volumes:
-      - /home/nikita/secrets:/home/node/app/secrets
+      - /home/nbinik/riakTS/secrets:/home/node/app/secrets
     networks:
       net:
         ipv4_address: 10.3.0.4
@@ -51,4 +51,3 @@ networks:
     ipam:
      config:
        - subnet: 10.3.0.0/16
-
