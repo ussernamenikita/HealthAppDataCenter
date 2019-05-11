@@ -19,10 +19,13 @@
   ...
 ```
 
-2. Add execute permission to file run.sh
+2. Add execute permission to files run.sh and init-letsencrypt.sh
 
    chmod +x prepare.sh
-3. Run run.sh with sudo 
+   chmod +x init-letsencrypt.sh
+3. Run init-letsencrypt.sh for ssl sertificate generation
+
+4. Run run.sh for start containers 
 
 All tables defined in /tables drectory will be loded to database when startup.
 When the cluster has started, open Riak Explorer in the browser by navigating to localhost:8098/admin/.

@@ -33,10 +33,11 @@ services:
         ipv4_address: 10.3.0.3
   nodeapp:
     image: nbinik/healthapp
-    restart: always 
+    restart: always
     ports:
-      - "5000:8080"
+      - "8080"
     depends_on:
+      - nginx
       - coordinator
     environment:
       - RIAK_ADDRESS='10.3.0.2:8087'
