@@ -5,6 +5,6 @@ CREATE TABLE TextWatcher
    symbol     VARCHAR   NOT NULL,
    timeDelta  SINT64 NOT NULL,
    PRIMARY KEY (
-     (user_id, QUANTUM(time, 15, 'm')),
-      user_id, time,symbol)
+     (QUANTUM(time, 15, 'm')),
+      time,symbol)
 )

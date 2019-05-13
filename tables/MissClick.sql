@@ -5,6 +5,6 @@ CREATE TABLE MissClick
    distance     DOUBLE   NOT NULL,
    isMissClick  BOOLEAN NOT NULL,
    PRIMARY KEY (
-     (user_id, QUANTUM(time, 15, 'm')),
-      user_id, time)
+     (QUANTUM(time, 15, 'm')),
+      time)
 )
