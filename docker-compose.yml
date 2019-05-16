@@ -1,79 +1,27 @@
 version: "3"
 services:
-  coordinator:
-    image: basho/riak-ts
-    ports:
-      - "8087:8087"
-      - "8098:8098"
-    environment:
-      - CLUSTER_NAME=riakts
-    labels:
-      - "com.basho.riak.cluster.name=riakts"
+  db:
+    image: mongo
+    restart: always
     volumes:
-      - ./data:/var/lib/riak
-      - ./logs:/var/log/riak
-      - ./schemas:/etc/riak/schemas/
-    networks:
-      net:
-        ipv4_address: 10.3.0.2
-  member:
-    image: basho/riak-ts
+      - ./data:/data/db
+    env_file:
+      - ./common.env
+  mongo-express:
+    image: mongo-express
+    restart: always
+    env_file:
+      - ./common.env
     ports:
-      - "8087"
-      - "8098"
-    labels:
-      - "com.basho.riak.cluster.name=riakts"
+      - 8081:8081
     depends_on:
-      - coordinator
-    environment:
-      - CLUSTER_NAME=riakts
-      - COORDINATOR_NODE='10.3.0.2'
-    networks:
-      net:
-        ipv4_address: 10.3.0.3
+      - db
   nodeapp:
     image: nbinik/healthapp
     restart: always
-    ports:
-      - "8080"
-    depends_on:
-      - nginx
-      - coordinator
-    environment:
-      - RIAK_ADDRESS='10.3.0.2:8087'
-      - RIAK_RECONECT_ATTEMPTS=5
-    volumes:
-      - /home/nbinik/riakTS/secrets:/home/node/app/secrets
-    networks:
-      net:
-        ipv4_address: 10.3.0.4
-  nginx:
-    image: nginx:1.15-alpine
-    restart: unless-stopped
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+    env_file:
+      - ./common.env
     ports:
       - "8080:8080"
-      - "80:8080"
-      - "443:443"
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    networks:
-      net:
-        ipv4_address: 10.3.0.5
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    networks:
-      net:
-        ipv4_address: 10.3.0.6
-networks:
-  net:
-    ipam:
-     config:
-       - subnet: 10.3.0.0/16
+    depends_on:
+      - db
