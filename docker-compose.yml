@@ -16,6 +16,15 @@ services:
       - 8081:8081
     depends_on:
       - db
+  version: "3"
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    volumes:
+      - ./:/etc/nginx/conf.d
+      - ./keys:/etc/nginx/keys
+    ports:
+      - "9999:9999"
   nodeapp:
     image: nbinik/healthapp
     restart: always
@@ -25,3 +34,4 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - nginx
