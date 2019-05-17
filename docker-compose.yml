@@ -13,10 +13,9 @@ services:
     env_file:
       - ./common.env
     ports:
-      - 8081:8081
+      - 80:8081
     depends_on:
       - db
-  version: "3"
   nginx:
     image: nginx:1.15-alpine
     restart: unless-stopped
@@ -24,14 +23,13 @@ services:
       - ./:/etc/nginx/conf.d
       - ./keys:/etc/nginx/keys
     ports:
-      - "9999:9999"
+      - "443:443"
+    depends_on:
+      - nodeapp
   nodeapp:
     image: nbinik/healthapp
     restart: always
     env_file:
       - ./common.env
-    ports:
-      - "8080:8080"
     depends_on:
       - db
-      - nginx
