@@ -12,8 +12,6 @@ services:
     restart: always
     env_file:
       - ./common.env
-    ports:
-      - 80:8081
     depends_on:
       - db
   nginx:
@@ -24,6 +22,7 @@ services:
       - ./keys:/etc/nginx/keys
     ports:
       - "443:443"
+      - "80:80"
     depends_on:
       - nodeapp
   nodeapp:
